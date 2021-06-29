@@ -1,0 +1,36 @@
+{
+  "name": "link-meta-preview",
+  "version": "0.0.1",
+  "description": "Get preview data (a title, description, image, domain name) from a url. Library uses puppeteer headless browser to scrape the web site.",
+  "main": "dist/app.js",
+  "files": [
+    "dist/"
+  ],
+  "scripts": {
+    "start": "ts-node src/app.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jongilnose/link-meta-preview.git"
+  },
+  "keywords": [
+    "metadata",
+    "scraper",
+    "html",
+    "open graph",
+    "puppeteer",
+    "typescript"
+  ],
+  "author": {
+    "name": "Bobby Park",
+    "email": "jongilnose@gmail.com",
+    "url": "https://github.com/jongilnose"
+  },
+  "homepage": "https://github.com/jongilnose/link-meta-preview/blob/master/README.md",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "get-urls": "^10.0.0",
+    "puppeteer": "^10.1.0"
+  }
+}
