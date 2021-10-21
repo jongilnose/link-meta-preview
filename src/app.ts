@@ -93,7 +93,10 @@ module.exports = async (
   }
   const browser = await puppeteer.launch()
   const page = await browser.newPage()
-  await page.goto(uri)
+  const response = await page.goto(uri)
+  if(response.status() != 200){
+    throw new Error('error msg!')
+  }
   await page.exposeFunction("imageAccessible", imageAccessible)
   obj.title = await getTitle(page)
   obj.description = await getDescription(page)
