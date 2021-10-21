@@ -95,7 +95,7 @@ module.exports = async (
   const page = await browser.newPage()
   const response = await page.goto(uri)
   if(response.status() != 200){
-    throw new Error('error msg!')
+    throw new Error('Error:'+response.status())
   }
   await page.exposeFunction("imageAccessible", imageAccessible)
   obj.title = await getTitle(page)
