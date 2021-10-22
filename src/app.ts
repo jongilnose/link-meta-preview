@@ -62,11 +62,39 @@ const getDomain = async (page:any, uri:string) => {
     : new URL(uri).hostname.replace("www.", "")
 }
 
-const getImage = async (page: any) => {
+const getImage = async (page: any, uri:string) => {
   const ogImage = await page.evaluate(() => {
     const ogImage = document.querySelector('meta[property="og:image"]')?.getAttribute('content')
     if (ogImage != null && ogImage.length > 0) {
       return ogImage
+    }
+
+    let imgs = Array.from(document.getElementsByTagName("img"));
+    if (imgs.length > 0) {
+      imgs = imgs.filter((img) => {
+        let addImg = true;
+        if (img.naturalWidth > img.naturalHeight) {
+          if (img.naturalWidth / img.naturalHeight > 3) {
+            addImg = false;
+          }
+        } else {
+          if (img.naturalHeight / img.naturalWidth > 3) {
+            addImg = false;
+          }
+        }
+        if (img.naturalHeight <= 50 || img.naturalWidth <= 50) {
+          addImg = false;
+        }
+        return addImg;
+      });
+      if (imgs.length > 0) {
+        imgs.forEach((img) =>
+          img.src.indexOf("//") === -1
+            ? (img.src = `${new URL(uri).origin}/${img.src}`)
+            : img.src
+        );
+        return imgs[0].src;
+      }
     }
     return ''
   })
@@ -101,7 +129,7 @@ module.exports = async (
   obj.title = await getTitle(page)
   obj.description = await getDescription(page)
   obj.domain = await getDomain(page, uri)
-  obj.image = await getImage(page)
+  obj.image = await getImage(page, uri)
   await browser.close()
   return obj
 }
